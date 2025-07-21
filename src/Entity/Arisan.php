@@ -6,7 +6,7 @@ use App\Repository\ArisanRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArisanRepository::class)]
-class Artisan
+class Arisan
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
