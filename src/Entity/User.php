@@ -44,15 +44,6 @@ class User
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Artisan::class, cascade: ['persist', 'remove'])]
-    private ?Arisan $artisan = null;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
-    private Collection $orders;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Review::class)]
-    private Collection $reviews;
-
 
     public function getId(): ?int
     {
