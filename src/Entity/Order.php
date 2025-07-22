@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -14,8 +15,11 @@ class Order
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    // #[ORM\Column]
+    // private ?int $user_id = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user_id;
 
     #[ORM\Column]
     private ?\DateTime $order_date = null;
@@ -32,6 +36,9 @@ class Order
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $tracking_number = null;
 
+    #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderDetail::class, cascade: ['persist', 'remove'])]
+    private Collection $orderDetails;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,12 +51,12 @@ class Order
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUserId(User $user_id): static
     {
         $this->user_id = $user_id;
 

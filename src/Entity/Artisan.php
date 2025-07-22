@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ArtisanRepository;
+use Doctrine\Common\Collections\Collection as CollectionsCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Collection;
 
 #[ORM\Entity(repositoryClass: ArtisanRepository::class)]
 class Artisan
@@ -14,8 +16,11 @@ class Artisan
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    // #[ORM\Column]
+    // private ?int $user_id = null;
+    #[ORM\OneToOne(inversedBy: 'artisan', targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user_id;
 
     #[ORM\Column(length: 100)]
     private ?string $business_name = null;
@@ -32,6 +37,9 @@ class Artisan
     #[ORM\Column(nullable: true)]
     private ?\DateTime $updated_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'artisan', targetEntity: Product::class)]
+    private CollectionsCollection $products;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,12 +52,12 @@ class Artisan
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUserId(User $user_id): static
     {
         $this->user_id = $user_id;
 

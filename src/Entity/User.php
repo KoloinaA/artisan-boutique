@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection as CollectionsCollection;
 use Doctrine\ORM\Mapping as ORM;
 use phpDocumentor\Reflection\Types\Collection;
 
@@ -43,6 +45,15 @@ class User
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Artisan::class, cascade: ['persist', 'remove'])]
+    private ?Artisan $artisan = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
+    private CollectionsCollection $orders;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Review::class)]
+    private CollectionsCollection $reviews;
 
 
     public function getId(): ?int

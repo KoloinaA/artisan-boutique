@@ -13,8 +13,11 @@ class ProductImage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $product_id = null;
+    // #[ORM\Column]
+    // private ?int $product_id = null;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Product $product_id;
 
     #[ORM\Column(length: 255)]
     private ?string $image_path = null;

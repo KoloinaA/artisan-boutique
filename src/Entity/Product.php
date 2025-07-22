@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Stmt\Catch_;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -14,11 +16,17 @@ class Product
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $artisan_id = null;
+    // #[ORM\Column]
+    // private ?int $artisan_id = null;
+    #[ORM\ManyToOne(targetEntity: Artisan::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Artisan $artisan_id;
 
-    #[ORM\Column]
-    private ?int $category_id = null;
+    // #[ORM\Column]
+    // private ?int $category_id = null;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Category $category_id;
 
     #[ORM\Column(length: 100)]
     private ?string $name = null;
@@ -41,6 +49,15 @@ class Product
     #[ORM\Column(nullable: true)]
     private ?\DateTime $updated_at = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductImage::class, cascade: ['persist', 'remove'])]
+    private Collection $images;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: OrderDetail::class)]
+    private Collection $orderDetails;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: Review::class)]
+    private Collection $reviews;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,24 +70,24 @@ class Product
         return $this;
     }
 
-    public function getArtisanId(): ?int
+    public function getArtisanId(): ?Artisan
     {
         return $this->artisan_id;
     }
 
-    public function setArtisanId(int $artisan_id): static
+    public function setArtisanId(Artisan $artisan_id): static
     {
         $this->artisan_id = $artisan_id;
 
         return $this;
     }
 
-    public function getCategoryId(): ?int
+    public function getCategoryId(): ?Category
     {
         return $this->category_id;
     }
 
-    public function setCategoryId(int $category_id): static
+    public function setCategoryId(Category $category_id): static
     {
         $this->category_id = $category_id;
 

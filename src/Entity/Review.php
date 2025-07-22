@@ -14,11 +14,17 @@ class Review
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $product_id = null;
+    // #[ORM\Column]
+    // private ?int $product_id = null;
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private Product $product_id;
 
-    #[ORM\Column]
-    private ?int $user_id = null;
+    // #[ORM\Column]
+    // private ?int $user_id = null;
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private User $user_id;
 
     #[ORM\Column]
     private ?int $rating = null;
