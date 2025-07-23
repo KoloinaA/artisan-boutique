@@ -47,24 +47,24 @@ class Review
         return $this;
     }
 
-    public function getProductId(): ?int
+    public function getProductId(): ?Product
     {
         return $this->product_id;
     }
 
-    public function setProductId(int $product_id): static
+    public function setProductId(Product $product_id): static
     {
         $this->product_id = $product_id;
 
         return $this;
     }
 
-    public function getUserId(): ?int
+    public function getUserId(): ?User
     {
         return $this->user_id;
     }
 
-    public function setUserId(int $user_id): static
+    public function setUserId(User $user_id): static
     {
         $this->user_id = $user_id;
 
